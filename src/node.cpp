@@ -69,7 +69,7 @@ void node_tick() {
     v8::Isolate::Scope isolateScope(m_isolate);
     v8::SealHandleScope seal(m_isolate);
     v8::platform::PumpMessageLoop(m_platform, m_env->isolate());
-    uv_run(m_env->event_loop(), UV_RUN_NOWAIT);
+    uv_run(uv_default_loop(), UV_RUN_NOWAIT);
 }
 
 void node_stop() {
