@@ -14,21 +14,20 @@ else()
     set(SYS_PATH lin)
 endif()
 
+if (WIN32)
+    set(LIBRARIES v8_libbase v8_libplatform node shlwapi dbghelp winmm)
+else()
+    set(LIBRARIES v8_libbase v8_libplatform pthread dl m node.59)
+endif()
+
 include_directories(include include/node include/v8 include/uv)
 link_directories(${CMAKE_SOURCE_DIR}/lib/${SYS_PATH})
 
 add_definitions(-DBUILDING_NODE_EXTENSION=1 -DEXTERNAL_NAPI=1)
 add_executable(m2onode_test src/main.cpp src/node.cpp)
+# add_library(m2onode_plugin src/plugin.cpp src/node.cpp)
 
-if (WIN32)
-    set(STATIC_LIBS node shlwapi dbghelp winmm)
-else()
-    set(STATIC_LIBS pthread dl m node.59)
-endif()
-
-
-
-target_link_libraries(m2onode_test ${STATIC_LIBS} v8_libbase v8_libplatform)
+target_link_libraries(m2onode_test ${LIBRARIES})
 
 add_custom_command(TARGET m2onode_test POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/misc/script.js" "${CMAKE_CURRENT_BINARY_DIR}/"
