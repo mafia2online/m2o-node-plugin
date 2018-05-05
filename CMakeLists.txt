@@ -10,14 +10,8 @@ elseif(APPLE)
     set(NODE_DLL libnode.59.dylib)
     set(SYS_PATH mac)
 else()
-    set(NODE_DLL libnode.59.so)
+    set(NODE_DLL libnode.so.59)
     set(SYS_PATH lin)
-endif()
-
-if (WIN32)
-    set(LIBRARIES v8_libbase v8_libplatform node shlwapi dbghelp winmm)
-else()
-    set(LIBRARIES v8_libbase v8_libplatform pthread dl m node.59)
 endif()
 
 include_directories(include include/node include/v8 include/uv)
@@ -26,6 +20,16 @@ link_directories(${CMAKE_SOURCE_DIR}/lib/${SYS_PATH})
 add_definitions(-DBUILDING_NODE_EXTENSION=1 -DEXTERNAL_NAPI=1)
 add_executable(m2onode_test src/main.cpp src/node.cpp)
 # add_library(m2onode_plugin src/plugin.cpp src/node.cpp)
+
+if (WIN32)
+    set(LIBRARIES v8_libbase v8_libplatform node shlwapi dbghelp winmm)
+else()
+    set(LIBRARIES v8_libbase v8_libplatform node pthread dl m)
+
+    add_custom_command(TARGET m2onode_test PRE_BUILD
+        COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_SOURCE_DIR}/lib/${SYS_PATH}/${NODE_DLL}" "${CMAKE_SOURCE_DIR}/lib/${SYS_PATH}/libnode.so"
+    )
+endif()
 
 target_link_libraries(m2onode_test ${LIBRARIES})
 
