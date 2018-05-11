@@ -10,19 +10,6 @@ bool node_init();
 void node_tick();
 void node_stop();
 
-int main(int argc, char* argv[]) {
-    node_init();
-
-    while (true) {
-        node_tick();
-        zpl_sleep_ms(10);
-    }
-
-    node_stop();
-    return 0;
-}
-
-enum { NM_F_BUILTIN  = 1 << 0 };
 #define TRY(exp) do { \
     napi_status status; \
     status = exp; \
@@ -90,4 +77,53 @@ napi_value m2on_init(napi_env env, napi_value exports) {
     return exports;
 }
 
+void plugin_init(m2o_args *args) {
+    zpl_printf("initialized plugin\n");
+    node_init();
+}
+
+void plugin_tick(m2o_args *args) {
+    node_tick();
+}
+
+void plugin_stop(m2o_args *args) {
+    zpl_printf("stopping plugin\n");
+    node_stop();
+}
+
+// dynmaic lib/testing execuatble switch
+#if defined(TEST)
+
+int main(int argc, char* argv[]) {
+    node_init();
+
+    while (true) {
+        node_tick();
+        zpl_sleep_ms(10);
+    }
+
+    node_stop();
+    return 0;
+}
+
+#else
+
+M2O_PLUGIN_MAIN(api, plugin) {
+    plugin->name = "m2o-node";
+    plugin->name_len = zpl_strlen(plugin->name);
+
+    plugin->author = "inlife";
+    plugin->author_len = zpl_strlen(plugin->author);
+
+    plugin->version = M2O_VERSION_CREATE(1, 0, 0);
+    // plugin->minimum_server_version = "1.0.0";
+
+    plugin->callbacks.plugin_init = plugin_init;
+    plugin->callbacks.plugin_tick = plugin_tick;
+    plugin->callbacks.plugin_stop = plugin_stop;
+}
+
+#endif
+
+enum { NM_F_BUILTIN  = 1 << 0 };
 NAPI_MODULE_X(m2o, m2on_init, NULL, NM_F_BUILTIN)

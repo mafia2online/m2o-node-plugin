@@ -18,25 +18,30 @@ include_directories(include include/node include/v8 include/uv)
 link_directories(${CMAKE_SOURCE_DIR}/lib/${SYS_PATH})
 
 add_definitions(-DBUILDING_NODE_EXTENSION=1 -DEXTERNAL_NAPI=1)
-add_executable(m2onode_test src/main.cpp src/node.cpp)
-# add_library(m2onode_plugin src/plugin.cpp src/node.cpp)
+
+if (TEST)
+    add_definitions(-DTEST=1)
+    add_executable(m2o_node src/main.cpp src/node.cpp)
+else()
+    add_library(m2o_node SHARED src/main.cpp src/node.cpp)
+endif()
 
 if (WIN32)
     set(LIBRARIES v8_libbase v8_libplatform node shlwapi dbghelp winmm)
 else()
     set(LIBRARIES v8_libbase v8_libplatform node pthread dl m)
 
-    add_custom_command(TARGET m2onode_test PRE_BUILD
+    add_custom_command(TARGET m2o_node PRE_BUILD
         COMMAND ${CMAKE_COMMAND} -E create_symlink "${CMAKE_SOURCE_DIR}/lib/${SYS_PATH}/${NODE_DLL}" "${CMAKE_SOURCE_DIR}/lib/${SYS_PATH}/libnode.so"
     )
 endif()
 
-target_link_libraries(m2onode_test ${LIBRARIES})
+target_link_libraries(m2o_node ${LIBRARIES})
 
-add_custom_command(TARGET m2onode_test POST_BUILD
+add_custom_command(TARGET m2o_node POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/misc/script.js" "${CMAKE_CURRENT_BINARY_DIR}/"
 )
 
-add_custom_command(TARGET m2onode_test POST_BUILD
+add_custom_command(TARGET m2o_node POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/lib/${SYS_PATH}/${NODE_DLL}" "${CMAKE_CURRENT_BINARY_DIR}/"
 )
