@@ -17,7 +17,7 @@ uv_loop_t* m_loop;
 
 bool node_init() {
     int argc = 2;
-    const char* argvv[] = { "node", "./script.js" };
+    const char* argvv[] = { "node", "./index.js" };
     char** argv = uv_setup_args(argc, (char **)argvv);
 
     uv_loop_t* event_loop = uv_default_loop();

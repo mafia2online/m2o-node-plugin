@@ -39,7 +39,7 @@ endif()
 target_link_libraries(m2o_node ${LIBRARIES})
 
 add_custom_command(TARGET m2o_node POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/misc/script.js" "${CMAKE_CURRENT_BINARY_DIR}/"
+    COMMAND ${CMAKE_COMMAND} -E copy "${CMAKE_SOURCE_DIR}/misc/index.js" "${CMAKE_CURRENT_BINARY_DIR}/"
 )
 
 add_custom_command(TARGET m2o_node POST_BUILD

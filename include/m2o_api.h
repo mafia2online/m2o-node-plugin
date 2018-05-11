@@ -1,5 +1,5 @@
 /* Mafia 2 Online Server API header definitions */
-/* Generated on Fri May 11 2018 13:45:07 GMT+0300 (EEST) */
+/* Generated on Fri May 11 2018 18:05:39 GMT+0300 (EEST) */
 
 #ifndef M2O_API_H
 #define M2O_API_H
@@ -72,12 +72,8 @@ typedef void (m2o_callback)(m2o_args *);
 typedef void (m2o_event_callback)(const char *, m2o_args *);
 
 typedef struct {
-    char *name;
-    size_t name_len;
-
-    char *author;
-    size_t author_len;
-
+    const char *name;
+    const char *author;
     unsigned int version;
 
     struct {
@@ -95,14 +91,14 @@ typedef struct {
 /* public methods */
 typedef void (m2o_api_set_last_error)(m2o_error error);
 typedef m2o_error (m2o_api_get_last_error)();
-typedef void (m2o_api_arg_init)(m2o_args *arg);
-typedef void (m2o_api_arg_free)(m2o_args *arg);
-typedef size_t (m2o_api_arg_size)(m2o_args *arg);
-typedef m2o_arg_value *(m2o_api_arg_get)(m2o_args *arg, size_t i);
-typedef void (m2o_api_arg_push_string)(m2o_args *arg, const char *string);
-typedef void (m2o_api_arg_push_integer)(m2o_args *arg, long integer);
-typedef void (m2o_api_arg_push_real)(m2o_args *arg, double real);
-typedef void (m2o_api_arg_push_pointer)(m2o_args *arg, void *pointer);
+typedef void (m2o_api_args_init)(m2o_args *arg);
+typedef void (m2o_api_args_free)(m2o_args *arg);
+typedef size_t (m2o_api_args_size)(m2o_args *arg);
+typedef m2o_arg_value *(m2o_api_args_get)(m2o_args *arg, size_t i);
+typedef void (m2o_api_args_push_string)(m2o_args *arg, const char *string);
+typedef void (m2o_api_args_push_integer)(m2o_args *arg, long integer);
+typedef void (m2o_api_args_push_real)(m2o_args *arg, double real);
+typedef void (m2o_api_args_push_pointer)(m2o_args *arg, void *pointer);
 typedef void (m2o_api_event_trigger)(char* name, m2o_args* args);
 typedef unsigned int (m2o_api_vehicle_create)();
 typedef bool (m2o_api_vehicle_destroy)(unsigned int vehicleid);
@@ -116,14 +112,14 @@ typedef vec3_t (m2o_api_ped_position_get)(unsigned int pedid);
 typedef struct m2o_api_vtable {
     m2o_api_set_last_error *set_last_error;
     m2o_api_get_last_error *get_last_error;
-    m2o_api_arg_init *arg_init;
-    m2o_api_arg_free *arg_free;
-    m2o_api_arg_size *arg_size;
-    m2o_api_arg_get *arg_get;
-    m2o_api_arg_push_string *arg_push_string;
-    m2o_api_arg_push_integer *arg_push_integer;
-    m2o_api_arg_push_real *arg_push_real;
-    m2o_api_arg_push_pointer *arg_push_pointer;
+    m2o_api_args_init *args_init;
+    m2o_api_args_free *args_free;
+    m2o_api_args_size *args_size;
+    m2o_api_args_get *args_get;
+    m2o_api_args_push_string *args_push_string;
+    m2o_api_args_push_integer *args_push_integer;
+    m2o_api_args_push_real *args_push_real;
+    m2o_api_args_push_pointer *args_push_pointer;
     m2o_api_event_trigger *event_trigger;
     m2o_api_vehicle_create *vehicle_create;
     m2o_api_vehicle_destroy *vehicle_destroy;

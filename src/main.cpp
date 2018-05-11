@@ -78,7 +78,7 @@ napi_value m2on_init(napi_env env, napi_value exports) {
 }
 
 void plugin_init(m2o_args *args) {
-    zpl_printf("initialized plugin\n");
+    zpl_printf("[info] m2o-node: initialized plugin\n");
     node_init();
 }
 
@@ -87,7 +87,6 @@ void plugin_tick(m2o_args *args) {
 }
 
 void plugin_stop(m2o_args *args) {
-    zpl_printf("stopping plugin\n");
     node_stop();
 }
 
@@ -109,14 +108,9 @@ int main(int argc, char* argv[]) {
 #else
 
 M2O_PLUGIN_MAIN(api, plugin) {
-    plugin->name = "m2o-node";
-    plugin->name_len = zpl_strlen(plugin->name);
-
-    plugin->author = "inlife";
-    plugin->author_len = zpl_strlen(plugin->author);
-
+    plugin->name    = "m2o-node";
+    plugin->author  = "inlife";
     plugin->version = M2O_VERSION_CREATE(1, 0, 0);
-    // plugin->minimum_server_version = "1.0.0";
 
     plugin->callbacks.plugin_init = plugin_init;
     plugin->callbacks.plugin_tick = plugin_tick;
