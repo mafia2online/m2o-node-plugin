@@ -13,3 +13,7 @@ $ mkdir build && cd build
 $ cmake ..
 $ cmake --build .
 ```
+
+## Credits
+
+Special thanks @gamelaster for the help!
