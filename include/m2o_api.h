@@ -1,5 +1,5 @@
 /* Mafia 2 Online Server API header definitions */
-/* Generated on Fri May 11 2018 18:05:39 GMT+0300 (EEST) */
+/* Generated on Fri May 11 2018 18:26:30 GMT+0300 (EEST) */
 
 #ifndef M2O_API_H
 #define M2O_API_H
@@ -68,8 +68,8 @@ typedef struct m2o_args {
     size_t size;
 } m2o_args;
 
-typedef void (m2o_callback)(m2o_args *);
-typedef void (m2o_event_callback)(const char *, m2o_args *);
+typedef void (m2o_callback)(const m2o_args *);
+typedef void (m2o_event_callback)(const char *, const m2o_args *);
 
 typedef struct {
     const char *name;
@@ -80,10 +80,7 @@ typedef struct {
         m2o_callback *plugin_init;
         m2o_callback *plugin_tick;
         m2o_callback *plugin_stop;
-        m2o_callback *player_connect;
-        m2o_callback *player_disconnect;
-        m2o_callback *player_message;
-        m2o_event_callback *event_trigger;
+        m2o_event_callback *plugin_event;
     } callbacks;
 } m2o_plugin;
 
@@ -99,7 +96,7 @@ typedef void (m2o_api_args_push_string)(m2o_args *arg, const char *string);
 typedef void (m2o_api_args_push_integer)(m2o_args *arg, long integer);
 typedef void (m2o_api_args_push_real)(m2o_args *arg, double real);
 typedef void (m2o_api_args_push_pointer)(m2o_args *arg, void *pointer);
-typedef void (m2o_api_event_trigger)(char* name, m2o_args* args);
+typedef void (m2o_api_event_trigger)(const char* name, const m2o_args* args);;
 typedef unsigned int (m2o_api_vehicle_create)();
 typedef bool (m2o_api_vehicle_destroy)(unsigned int vehicleid);
 typedef bool (m2o_api_vehicle_position_set)(unsigned int vehicleid, vec3_t position);

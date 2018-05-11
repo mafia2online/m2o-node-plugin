@@ -77,17 +77,30 @@ napi_value m2on_init(napi_env env, napi_value exports) {
     return exports;
 }
 
-void plugin_init(m2o_args *args) {
+void plugin_init(const m2o_args *args) {
     zpl_printf("[info] m2o-node: initialized plugin\n");
     node_init();
 }
 
-void plugin_tick(m2o_args *args) {
+void plugin_tick(const m2o_args *args) {
     node_tick();
 }
 
-void plugin_stop(m2o_args *args) {
+void plugin_stop(const m2o_args *args) {
     node_stop();
+}
+
+void plugin_event(const char *name, const m2o_args *args) {
+    zpl_printf("an event: %s happened!\n", name);
+    zpl_printf("it has %d arguments:\n", args->size);
+
+    for (int i = 0; i < args->size; ++i) {
+        switch (args->values[i].type) {
+            case M2O_ARG_REAL: zpl_printf("\t#%d - %f\n", i, args->values[i].real); break;
+            case M2O_ARG_INTEGER: zpl_printf("\t#%d - %d\n", i, args->values[i].integer); break;
+            case M2O_ARG_STRING: zpl_printf("\t#%d - %s\n", i, args->values[i].string); break;
+        }
+    }
 }
 
 // dynmaic lib/testing execuatble switch
@@ -112,9 +125,10 @@ M2O_PLUGIN_MAIN(api, plugin) {
     plugin->author  = "inlife";
     plugin->version = M2O_VERSION_CREATE(1, 0, 0);
 
-    plugin->callbacks.plugin_init = plugin_init;
-    plugin->callbacks.plugin_tick = plugin_tick;
-    plugin->callbacks.plugin_stop = plugin_stop;
+    plugin->callbacks.plugin_init   = plugin_init;
+    plugin->callbacks.plugin_tick   = plugin_tick;
+    plugin->callbacks.plugin_stop   = plugin_stop;
+    plugin->callbacks.plugin_event  = plugin_event;
 }
 
 #endif
