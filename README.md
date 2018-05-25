@@ -1,6 +1,6 @@
 # m2o-node
 
-Mafia 2 Online Node.js server-side scripting backend implementation using NAPI. Plugin can be built only in release x64 mode at the moment.
+Mafia 2 Online Node.js server-side scripting backend implementation using NAPI. Plugin can be built only in release mode at the moment.
 
 ## Environment
 

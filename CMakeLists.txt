@@ -5,7 +5,12 @@ set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS} -std=c++11")
 
 if (WIN32)
     set(NODE_DLL node.dll)
-    set(SYS_PATH win)
+
+    if (WIN64)
+        set(SYS_PATH win64)
+    else()
+        set(SYS_PATH win32)
+    endif()
 elseif(APPLE)
     set(NODE_DLL libnode.59.dylib)
     set(SYS_PATH mac)
