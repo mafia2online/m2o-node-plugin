@@ -90,17 +90,12 @@ void plugin_stop(const m2o_args *args) {
     node_stop();
 }
 
-void plugin_event(const char *name, const m2o_args *args) {
-    zpl_printf("an event: %s happened!\n", name);
-    zpl_printf("it has %d arguments:\n", args->size);
+void player_connect(const m2o_args *args) {
+    zpl_printf("a new player %d has connected\n", args->values[0]->integer);
+}
 
-    for (int i = 0; i < args->size; ++i) {
-        switch (args->values[i].type) {
-            case M2O_ARG_REAL: zpl_printf("\t#%d - %f\n", i, args->values[i].real); break;
-            case M2O_ARG_INTEGER: zpl_printf("\t#%d - %d\n", i, args->values[i].integer); break;
-            case M2O_ARG_STRING: zpl_printf("\t#%d - %s\n", i, args->values[i].string); break;
-        }
-    }
+void player_connect(const m2o_args *args) {
+    zpl_printf("a player %d has disconnected\n", args->values[0]->integer);
 }
 
 // dynmaic lib/testing execuatble switch
@@ -125,10 +120,12 @@ M2O_PLUGIN_MAIN(api, plugin) {
     plugin->author  = "inlife";
     plugin->version = M2O_VERSION_CREATE(1, 0, 0);
 
-    plugin->callbacks.plugin_init   = plugin_init;
-    plugin->callbacks.plugin_tick   = plugin_tick;
-    plugin->callbacks.plugin_stop   = plugin_stop;
-    plugin->callbacks.plugin_event  = plugin_event;
+    plugin->callbacks.plugin_init = plugin_init;
+    plugin->callbacks.plugin_tick = plugin_tick;
+    plugin->callbacks.plugin_stop = plugin_stop;
+
+    plugin->callbacks.player_connect    = player_connect;
+    plugin->callbacks.player_disconnect = player_disconnect;
 }
 
 #endif
