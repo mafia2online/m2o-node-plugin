@@ -1,5 +1,5 @@
 /* Mafia 2 Online Server API header definitions */
-/* Generated on Mon Oct 08 2018 17:41:35 GMT+0300 (EEST) */
+/* Generated on Mon Oct 08 2018 18:12:23 GMT+0300 (EEST) */
 
 #ifndef M2O_API_H
 #define M2O_API_H
@@ -183,8 +183,8 @@ typedef void (m2o_api_args_push_real)(m2o_args *arg, double real);
 typedef void (m2o_api_args_push_pointer)(m2o_args *arg, void *pointer);
 typedef unsigned int (m2o_api_vehicle_create)();
 typedef bool (m2o_api_vehicle_destroy)(unsigned int vehicleid);
-typedef bool (m2o_api_vehicle_position_set)(unsigned int vehicleid, m2o_vec3_t position);
-typedef m2o_vec3_t (m2o_api_vehicle_position_get)(unsigned int vehicleid);
+typedef bool (m2o_api_vehicle_position_set)(unsigned int vehicleid, m2o_vec3 position);
+typedef m2o_vec3 (m2o_api_vehicle_position_get)(unsigned int vehicleid);
 typedef bool (m2o_api_player_kick)(unsigned int playerid);
 typedef unsigned int (m2o_api_ped_create)();
 typedef bool (m2o_api_ped_destroy)(unsigned int pedid);

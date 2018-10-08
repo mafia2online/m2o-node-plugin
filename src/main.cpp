@@ -55,8 +55,8 @@ napi_value vehicle_position_get(napi_env env, napi_callback_info info) {
     TRY(napi_get_cb_info(env, info, &argc, argv, nullptr, nullptr));
     TRY(napi_get_value_int32(env, argv[0], &vehicle_id));
 
-    // vec3_t pos = api.vehicle_position_get(vehicle_id);
-    vec3_t pos = {0, 15, 242};
+    // m2o_vec3 pos = api.vehicle_position_get(vehicle_id);
+    m2o_vec3 pos = {0, 15, 242};
 
     napi_value result;
     TRY(napi_create_object(env, &result));
@@ -77,25 +77,25 @@ napi_value m2on_init(napi_env env, napi_value exports) {
     return exports;
 }
 
-void plugin_init(const m2o_args *args) {
+void plugin_init(const m2o_args *args, m2o_event_result *_) {
     zpl_printf("[info] m2o-node: initialized plugin\n");
     node_init();
 }
 
-void plugin_tick(const m2o_args *args) {
+void plugin_tick(const m2o_args *args, m2o_event_result *_) {
     node_tick();
 }
 
-void plugin_stop(const m2o_args *args) {
+void plugin_stop(const m2o_args *args, m2o_event_result *_) {
     node_stop();
 }
 
-void player_connect(const m2o_args *args) {
-    zpl_printf("a new player %d has connected\n", args->values[0]->integer);
+void player_connect(const m2o_args *args, m2o_event_result *result) {
+    zpl_printf("a new player %d has connected\n", (int)args->values[0].integer);
 }
 
-void player_connect(const m2o_args *args) {
-    zpl_printf("a player %d has disconnected\n", args->values[0]->integer);
+void player_disconnect(const m2o_args *args, m2o_event_result *result) {
+    zpl_printf("a player %d has disconnected\n", (int)args->values[0].integer);
 }
 
 // dynmaic lib/testing execuatble switch
